@@ -1,0 +1,9 @@
+<div class="position-fixed top-0 end-0 p-3"style="z-index: 5"><ngb-toast
+    class="bg-success text-white"
+    *ngIf="showToast"
+    [autohide]="true"
+    [delay]="4500"
+    (hidden)="onToastHidden()"
+  >
+  {{ message }}
+  </ngb-toast></div>

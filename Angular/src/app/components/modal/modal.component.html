@@ -1,0 +1,18 @@
+<div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-content slide-in">
+      <div class="modal-header d-flex justify-content-center" >
+        <h2 class="w-100 text-center">{{ title }}</h2>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary me-2" (click)="cancel()">Cancelar</button>
+        <button class="btn btn-danger" (click)="ok()">Eliminar</button>
+      </div>
+    </div>
+</div>
+  
+  

@@ -1,0 +1,88 @@
+<div class="d-flex justify-content-center align-items-center vh-90 mt-5">
+  <div class="card centered-card w-50">
+    <div class="card-body">
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        <!-- Campo Nombre: Editable en Alta y Edición -->
+        <div class="form-group">
+          <label for="lastname">Apellido</label>
+          <input
+            type="text"
+            id="lastname"
+            formControlName="lastname"
+            class="form-control mb-4"
+            [readonly]="isEditMode && disableLastNameEdit"
+          />
+        </div>
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-control mb-4"
+            [readonly]="isEditMode && disableNameEdit"
+          />
+        </div>
+        <div class="form-group mb-4">
+          <label for="position">Posición</label>
+          <select class="form-select" id="position" formControlName="position">
+            <option *ngFor="let position of positions" [value]="position">
+              {{ position }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="birthday">Fecha de Nacimiento</label>
+          <input
+            type="date"
+            id="birthday"
+            formControlName="birthday"
+            class="form-control mb-4"
+            [readonly]="isEditMode && disableNameEdit"
+          />
+        </div>
+        <!-- Campo Email: Editable solo en Alta -->
+        <div
+          class="form-group"
+          *ngIf="!isEditMode || (isEditMode && !disableEmailEdit)"
+        >
+          <label for="email">Correo Electrónico</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control mb-4"
+            [readonly]="isEditMode && disableEmailEdit"
+          />
+        </div>
+        <div
+          class="form-group"
+          *ngIf="!isEditMode || (isEditMode && !disableEmailEdit)"
+        >
+          <label for="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control mb-4"
+            [readonly]="isEditMode && disableEmailEdit"
+          />
+        </div>
+
+        <!-- Botones de Cancelar y Guardar -->
+        <div class="form-group">
+          <button
+            type="button"
+            class="btn btn-outline-secondary me-4"
+            (click)="onCancel()"
+          >
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-outline-primary">
+            {{ isEditMode ? "Guardar " : "Crear " }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+
+.animated-image {
+    animation: fadeIn 4s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  

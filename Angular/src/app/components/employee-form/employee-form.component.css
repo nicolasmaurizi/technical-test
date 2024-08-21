@@ -1,0 +1,14 @@
+.container {
+  height: 100vh;
+  width: auto 
+}
+
+.centered-card {
+  width: 100%;
+  max-width: 800px; 
+ 
+}
+
+.form-group {
+  margin-bottom: 1.5rem; 
+}

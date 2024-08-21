@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "install-and-run": "concurrently \"npm run install-and-run:FE \" \" npm run install-and-run:BE\"",
+        "install-and-run:FE": "cd Angular && npm install && npm run start && cd ..",
+        "install-and-run:BE": "cd Nest && npm install && npm run start:dev && cd .."
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}

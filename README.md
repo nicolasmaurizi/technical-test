@@ -1,15 +1,8 @@
 # 🚀 technical-test
 
 
+![imagen](https://github.com/user-attachments/assets/7f4c835d-bb71-442e-80f2-021e0a3e3ae6)
 
-## 📂 Folders:
-├── Folder 1: "SuperSecretCode"
-│   └── file.js: 
-│       console.log("oh! this is the first version 😎");
-│
-└── Folder 2: "Randomness"
-    └── index.js:
-        console.log("2 foldes with some funny code 😜");
 
 
 

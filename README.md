@@ -1,13 +1,16 @@
 # 🚀 technical-test
 
-📂 Folders:
-    ├── Angular: "SuperSecretCode"
-    │   └── file.js: 
-    │       console.log("oh! this is the first version 😎");
-    │
-    └── Nest: "Randomness"
-        └── index.js:
-            console.log("2 folders with some funny code 😜");
+
+
+## 📂 Folders:
+├── Folder 1: "SuperSecretCode"
+│   └── file.js: 
+│       console.log("oh! this is the first version 😎");
+│
+└── Folder 2: "Randomness"
+    └── index.js:
+        console.log("2 foldes with some funny code 😜");
+
 
 
 ## Installation

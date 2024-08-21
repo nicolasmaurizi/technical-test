@@ -1,6 +1,8 @@
 # 🚀 technical-test
 
-📂 Folders:
+
+
+## 📂 Folders:
 ├── Folder 1: "SuperSecretCode"
 │   └── file.js: 
 │       console.log("oh! this is the first version 😎");
@@ -8,6 +10,7 @@
 └── Folder 2: "Randomness"
     └── index.js:
         console.log("2 foldes with some funny code 😜");
+
 
 
 ## Installation

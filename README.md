@@ -1,8 +1,7 @@
 # 🚀 technical-test
 
 
-![imagen](https://github.com/user-attachments/assets/7f4c835d-bb71-442e-80f2-021e0a3e3ae6)
-
+![imagen](https://github.com/user-attachments/assets/0f33c6b5-2d29-4bc5-a68e-0567105a4972)
 
 
 
@@ -10,6 +9,7 @@
 1. Clone the repo: `git clone https://github.com/nicolasmaurizi/technical-test` 📂
 2. Install dependencies: `npm install` 🔧
 3. Run the app: `npm run install-and-run` ⚙️
+4. Important: You should set up an environment variable in the `.env` file as follows: MONGO_URI='your_mongodb_uri'
 
 ## Project Status
 - [ ] Complete ✔️

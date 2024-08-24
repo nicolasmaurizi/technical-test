@@ -1,16 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeService, Employee } from '../../services/employee.service';
-import{ Router} from'@angular/router';
+import { Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
-
 })
 export class EmployeeListComponent implements OnInit {
-  constructor(private employeeService: EmployeeService, private router: Router,private dataService: DataService) {}
+  constructor(
+    private authService: AuthService,
+    private employeeService: EmployeeService,
+    private router: Router,
+    private dataService: DataService
+  ) {}
   listTitle: string = 'Listado de Empleados';
   loading = false;
   toastMessage: string = '';
@@ -22,16 +27,11 @@ export class EmployeeListComponent implements OnInit {
   searchTerm: string = '';
   selectedEmployeeId: string = '';
   //
-  showToastError : boolean = false;
-  // Inputs employee-form  
+  showToastError: boolean = false;
+  // Inputs employee-form
   showForm: boolean = false;
   showTable: boolean = true;
-  employeeData: any = []; 
-
-  disableEmailEdit: boolean = false;
-  //disableNameEdit: boolean = false; disableLastNameEdit: boolean = false;
-  
-  isEditOwn: boolean = false;
+  employeeData: any = [];
 
   showError() {
     this.showToastError = true;
@@ -41,36 +41,36 @@ export class EmployeeListComponent implements OnInit {
     this.showToastError = false;
   }
 
-  onButtonEditClick(e:any): void {
+  onButtonEditClick(e: any): void {
+    // employeed table vs employeed logged
     if (e._id === this.employeeId) {
-      const dataToPass = { e: e,isEditMode: true ,disableEmailEdit: true ,isEditOwn: true}; 
+      const dataToPass = { e: e, isEditMode: true, isEditOwn: true };
       this.dataService.setData(dataToPass);
       this.router.navigate(['/new']);
-    } 
-    else {
-      const dataToPass = { e: e,isEditMode: true ,disableEmailEdit: true,  disableLastNameEdit: false,disableNameEdit: false ,isEditOwn: false}; 
+    } else {
+      const dataToPass = { e: e, isEditMode: true, isEditOwn: false };
       this.dataService.setData(dataToPass);
       this.router.navigate(['/new']);
     }
   }
 
   onButtonNewClick() {
-    const dataToPass = { isEditMode: false ,disableEmailEdit: true}; 
+    const dataToPass = { isEditMode: false, isEditOwn: false };
     this.dataService.setData(dataToPass);
     this.router.navigate(['/new']);
   }
 
-  onButtonDeleteClick(e:any): void {
-// TODO: Implementar la lógica para eliminar un empleado 
+  onButtonDeleteClick(e: any): void {
+    // TODO: Implementar la lógica para eliminar un empleado
   }
 
   showModal: boolean = false;
   showModal2: boolean = false;
-  
+
   onCancel() {
     this.closeModal();
   }
-  openModal(e:any) {
+  openModal(e: any) {
     this.showToast = false;
     this.selectedEmployeeId = e._id;
     this.showModal = true;
@@ -91,49 +91,53 @@ export class EmployeeListComponent implements OnInit {
         this.showToast = true;
       },
       error: (error) => {
-        this.showError()
+        this.showError();
       },
     });
   }
 
- logout() {
-    sessionStorage.clear();
-    this.router.navigate(['/login']);
+  logout() {
+    this.authService.logout();
+    // Redirect to employee list page
+     this.router.navigate(['/login']);
   }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
     this.loadEmployees();
+    this.dataService.data$.subscribe((data) => {
+      if (data) {
+        this.toastMessage = data.toastMessage;
+        this.showToast = data.showMessage;
+      }
       // message to User when login
-    //  if (this.employeeId !== null) {
-        this.employeeId = sessionStorage.getItem('id');
-        // parar por parametro si deebo mostrar este mensaje
-      setTimeout(() => {
-        this.toastMessage = `¡Bienvenido, ${sessionStorage.getItem('username')}!`;
-        this.showToast = true;
-      }, 1250);
-   // }; 
+
+      if (this.showToast === true) {
+        setTimeout(() => {
+          this.showToast = false;
+        }, 3000);
+      }
+    });
+    // TODO: ?
+    this.employeeId = sessionStorage.getItem('id');
   }
 
-    loadEmployees() {
-      this.employeeService.getEmployees().subscribe({
-        next: (data) => {
-          this.data = data;
-          this.filterData();
-        },
-        error: (error) => {
-          console.error('Error al cargar los empleados', error);
-        },
-      });
-    }
-
-    filterData(): void {
-      const term = this.searchTerm.toLowerCase();
-      this.filteredData = this.data.filter(item => 
-        {const name = item.name ? item.name.toLowerCase() : '';
-        return name.includes(term)}
-      );
-
-    }
-
+  loadEmployees() {
+    this.employeeService.getEmployees().subscribe({
+      next: (data) => {
+        this.data = data;
+        this.filterData();
+      },
+      error: (error) => {
+        console.error('Error al cargar los empleados', error);
+      },
+    });
   }
 
+  filterData(): void {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredData = this.data.filter((item) => {
+      const name = item.name ? item.name.toLowerCase() : '';
+      return name.includes(term);
+    });
+  }
+}

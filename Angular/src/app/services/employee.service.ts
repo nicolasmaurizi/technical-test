@@ -36,8 +36,8 @@ EmployeeService {
     return this.http.post<Employee>(this.apiUrl, employee);
   }
 
-  updateEmployee(employee: Employee): Observable<Employee> {
-    return this.http.put<Employee>(`${this.apiUrl}/${employee._id}`, employee);
+  updateEmployee(id: string, employee: Employee): Observable<Employee> {
+    return this.http.patch<Employee>(`${this.apiUrl}/${id}`, employee);
   }
 
   deleteEmployee(id: string): Observable<any> {

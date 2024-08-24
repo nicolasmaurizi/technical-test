@@ -4,8 +4,7 @@ import { HydratedDocument } from 'mongoose';
 export type EmployeeDocument = HydratedDocument<Employee>;
 @Schema()
 export class Employee {
-  @Prop()
-  _id?: string;
+  _id?: string; // without decorator
   @Prop()
   name?: string;
   @Prop()
@@ -31,3 +30,7 @@ export class Employee {
 }
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);
 
+EmployeeSchema.pre('findOneAndUpdate', function (next) {
+  this.set({ updatedAt: new Date() }); // actualiza el campo updatedAt automáticamente
+  next();
+});

@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Param, Put, Delete , NotFoundException, InternalServerErrorException ,  HttpCode,HttpStatus} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete , NotFoundException, InternalServerErrorException , UseGuards} from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { Employee } from './schemas/employee.schema';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { JwtAuthGuard } from '../auth/JwtAuthGuard';
 
 @Controller('employees')
+//@UseGuards(JwtAuthGuard) for controller
 export class EmployeesController {
     constructor(private readonly employeesService: EmployeesService) {}
   
@@ -15,7 +18,7 @@ export class EmployeesController {
         console.log(error)            
         }
     }
-  
+    @UseGuards(JwtAuthGuard)
     @Get()
     findAll() {
       return this.employeesService.findAll();
@@ -25,12 +28,13 @@ export class EmployeesController {
     findOne(@Param('id') id: string) {
       return this.employeesService.findOne(id);
     }
-  
-    @Put(':id')
-    update(@Param('id') id: string, @Body() updateItemDto: Employee) {
-      return this.employeesService.update(id, updateItemDto);
+    */
+    @UseGuards(JwtAuthGuard)
+    @Patch(':id')
+    async update(@Param('id') id: string, @Body() UpdateEmployeeDto: UpdateEmployeeDto) {
+      return this.employeesService.update(id,UpdateEmployeeDto);
     }
-  */
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: string): Promise<Employee[]> {
       try {

@@ -1,4 +1,4 @@
-import { Component , Input , OnChanges, SimpleChanges} from'@angular/core';
+import { Component , Input } from'@angular/core';
 
 @Component({
   selector: 'app-toast',
@@ -7,9 +7,8 @@ import { Component , Input , OnChanges, SimpleChanges} from'@angular/core';
 })
 export class ToastComponent {
 
-  @Input() message: string = 'Operación exitosa';  
-
-   @Input() showToast: boolean = false;  
+  @Input() message: string = '';  
+  @Input() showToast: boolean = false;  
 
   onToastHidden() {
     this.showToast = false;

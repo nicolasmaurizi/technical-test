@@ -17,14 +17,17 @@ interface PositionResponse {
 
 export class EmployeeFormComponent implements OnInit {
   @Input() employeeData: any; // Datos del empleado para editar
-  @Input() isEditMode: boolean = true; // Modo de edición o alta
-  @Input() isEditOwn: boolean = true; // Modo de edición o alta
-  @Input() disableNameEdit: boolean = false; // Controla si se puede editar el nombre en el modo de edición
-  @Input() disableLastNameEdit: boolean = false; // Controla si se puede editar el nombre en el modo de edición
-  @Input() disableEmailEdit: boolean = true; // Controla si se puede editar el email en el modo de edición
+  // for show and enabled inputs
+  @Input() isEditMode: boolean = false; 
+  @Input() isEditOwner: boolean = false; 
+
+  //
   @Output() formSubmit = new EventEmitter<any>();
   @Output() formCancel = new EventEmitter<void>();
- 
+  
+  toastMessage: string = '';
+  showToast: boolean = false;
+
   positions: string[] = [];
   element: [] = [];
   
@@ -48,25 +51,28 @@ export class EmployeeFormComponent implements OnInit {
        }
      );
 
-
      this.dataService.data$.subscribe(data => {
       if (data) {
         this.isEditMode = data.isEditMode;
-        this.isEditOwn = data.isEditOwn;
-        this.disableEmailEdit = data.disableEmailEdit;
-        this.employeeData = data.e; 
-        this.employeeForm.get('name')?.setValue(data.name);
-        this.employeeForm.get('lastname')?.setValue(data.lastname);
+        this.isEditOwner = data.isEditOwn;
+         
+        if (this.isEditMode) {
+          this.employeeData = data.e; 
+          this.employeeForm.get('name')?.setValue(data.name);
+          this.employeeForm.get('lastname')?.setValue(data.lastname);
+          this.employeeForm.get('position')?.setValue(data.position);
+        }
+        
         }
     });
 
     this.employeeForm = this.fb.group({
-      name: [{ value: this.employeeData?.name || '', disabled: this.isEditMode  && this.isEditOwn}, Validators.required],
-      lastname: [{ value: this.employeeData?.lastname || '', disabled: this.isEditMode && this.isEditOwn }, Validators.required],
-      email: [{ value: this.employeeData?.email || '', disabled: this.isEditMode && this.disableEmailEdit }, [Validators.required, Validators.email]],
+      name: [{ value: this.employeeData?.name || '', disabled: this.isEditOwner&&!this.isEditMode}, Validators.required],
+      lastname: [{ value: this.employeeData?.lastname || '', disabled: this.isEditOwner&&!this.isEditMode }, Validators.required],
+      email: [{ value: this.employeeData?.email || '', disabled: this.isEditMode }, [Validators.required, Validators.email]],
       password: [{ value: this.employeeData?.password || '', disabled: this.isEditMode  }, [Validators.required, Validators.minLength(8)]],
       birthday: [{ value: this.employeeData?.birthday || '', disabled: this.isEditMode }, [Validators.required]],
-      position: [{value: this.employeeData?.position || '', disabled:   this.isEditMode}, Validators.required]
+      position: [{ value: this.employeeData?.position || '', disabled: this.isEditMode&&!this.isEditOwner}, [Validators.required]],
     });
 
   }
@@ -74,15 +80,31 @@ export class EmployeeFormComponent implements OnInit {
  onSubmit(): void { 
      if (this.employeeForm.valid) {
       this.formSubmit.emit(this.employeeForm.value);
-      this.employeeService.addEmployee(this.employeeForm.value).subscribe(
-        (response) => {
-          window.alert('Usuario Creado');
-          this.router.navigate(['/employees']);
-        },
-        (error) => {
-          window.alert('Verifique Datos');
-        }
-      );
+
+      if (this.isEditMode) {
+        this.employeeService.updateEmployee(this.employeeData._id,this.employeeForm.value).subscribe(
+          (response) => {
+            const dataToPass = { toastMessage: 'Usuario MODIFICADO correctamente.',showMessage: true}; 
+            this.dataService.setData(dataToPass);
+            this.router.navigate(['/employees']);
+          },
+          (error) => {
+            window.alert('Verifique Datos');
+          }
+        );
+      } else {
+        this.employeeService.addEmployee(this.employeeForm.value).subscribe(
+          () => {
+            const dataToPass = { toastMessage: 'Usuario CREADO correctamente.',showMessage: true}; 
+            this.dataService.setData(dataToPass);
+            this.router.navigate(['/employees']);
+          },
+          (error) => {
+            window.alert('Verifique Datos');
+          }
+        );
+      }
+
     }
     else {
       window.alert('Datos erróneos');

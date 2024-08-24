@@ -4,16 +4,18 @@ import { AuthController } from './auth.controller';
 import { EmployeesModule } from '../employees/employees.module';
 import { EmployeesService } from '../employees/employees.service';
 import { JwtModule } from '@nestjs/jwt';
-
+import { PassportModule } from '@nestjs/passport'; 
+import { JwtStrategy } from './jwt.strategy'; 
+import { TokenModule } from '../token/token.module'; 
 
 @Module({
-  imports: [
-   
+  imports: [ 
+    PassportModule.register({ defaultStrategy: 'jwt' }), 
     JwtModule.register({
-      secret: 'yourSecretKey', 
-      signOptions: { expiresIn: '60s' },
-    }),EmployeesModule],
-  providers: [AuthService, EmployeesService],
+      secret: process.env.JWT_SECRET || 'technical-test', 
+      signOptions: { expiresIn: '20s' },
+    }),EmployeesModule,TokenModule],
+  providers: [AuthService, EmployeesService, JwtStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

@@ -3,27 +3,25 @@
     <div class="card-body">
       <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
         <!-- Campo Nombre: Editable en Alta y Edición -->
-        <div class="form-group">
+        <div class="form-group" *ngIf="(!isEditMode&&!isEditOwner)||(isEditMode&&!isEditOwner)">
           <label for="lastname">Apellido</label>
           <input
             type="text"
             id="lastname"
             formControlName="lastname"
             class="form-control mb-4"
-            [readonly]="isEditMode && disableLastNameEdit"
           />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="(!isEditMode&&!isEditOwner)||(isEditMode&&!isEditOwner)">
           <label for="name">Nombre</label>
           <input
             type="text"
             id="name"
             formControlName="name"
             class="form-control mb-4"
-            [readonly]="isEditMode && disableNameEdit"
           />
         </div>
-        <div class="form-group mb-4">
+        <div class="form-group mb-4" *ngIf="(!isEditMode&&!isEditOwner)||(isEditMode &&isEditOwner)">
           <label for="position">Posición</label>
           <select class="form-select" id="position" formControlName="position">
             <option *ngFor="let position of positions" [value]="position">
@@ -31,20 +29,19 @@
             </option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="(!isEditMode&&!isEditOwner)"
+        >
           <label for="birthday">Fecha de Nacimiento</label>
           <input
             type="date"
             id="birthday"
             formControlName="birthday"
             class="form-control mb-4"
-            [readonly]="isEditMode && disableNameEdit"
           />
         </div>
         <!-- Campo Email: Editable solo en Alta -->
         <div
-          class="form-group"
-          *ngIf="!isEditMode || (isEditMode && !disableEmailEdit)"
+          class="form-group" *ngIf="(!isEditMode&&!isEditOwner)"
         >
           <label for="email">Correo Electrónico</label>
           <input
@@ -52,12 +49,11 @@
             id="email"
             formControlName="email"
             class="form-control mb-4"
-            [readonly]="isEditMode && disableEmailEdit"
           />
         </div>
         <div
           class="form-group"
-          *ngIf="!isEditMode || (isEditMode && !disableEmailEdit)"
+          *ngIf="(!isEditMode&&!isEditOwner)"
         >
           <label for="password">Contraseña</label>
           <input
@@ -65,11 +61,10 @@
             id="password"
             formControlName="password"
             class="form-control mb-4"
-            [readonly]="isEditMode && disableEmailEdit"
           />
         </div>
 
-        <!-- Botones de Cancelar y Guardar -->
+        <!-- Buttons -->
         <div class="form-group">
           <button
             type="button"
@@ -86,3 +81,4 @@
     </div>
   </div>
 </div>
+

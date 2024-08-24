@@ -1,4 +1,3 @@
-
 export class CreateEmployeeDto {
     _id?: string;
     name?: string;

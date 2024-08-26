@@ -2,7 +2,7 @@
   <div class="card centered-card w-50">
     <div class="card-body">
       <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-        <!-- Campo Nombre: Editable en Alta y Edición -->
+        <!-- Campo Apellido -->
         <div class="form-group" *ngIf="(!isEditMode&&!isEditOwner)||(isEditMode&&!isEditOwner)">
           <label for="lastname">Apellido</label>
           <input
@@ -12,6 +12,7 @@
             class="form-control mb-4"
           />
         </div>
+        <!-- Campo Nombre -->
         <div class="form-group" *ngIf="(!isEditMode&&!isEditOwner)||(isEditMode&&!isEditOwner)">
           <label for="name">Nombre</label>
           <input
@@ -21,6 +22,7 @@
             class="form-control mb-4"
           />
         </div>
+        <!-- Campo Posiciones -->
         <div class="form-group mb-4" *ngIf="(!isEditMode&&!isEditOwner)||(isEditMode &&isEditOwner)">
           <label for="position">Posición</label>
           <select class="form-select" id="position" formControlName="position">
@@ -29,6 +31,7 @@
             </option>
           </select>
         </div>
+        <!-- Campo Fecha de nacimiento -->        
         <div class="form-group" *ngIf="(!isEditMode&&!isEditOwner)"
         >
           <label for="birthday">Fecha de Nacimiento</label>
@@ -39,7 +42,7 @@
             class="form-control mb-4"
           />
         </div>
-        <!-- Campo Email: Editable solo en Alta -->
+        <!-- Campo Email -->
         <div
           class="form-group" *ngIf="(!isEditMode&&!isEditOwner)"
         >
@@ -51,6 +54,7 @@
             class="form-control mb-4"
           />
         </div>
+        <!-- Campo Contraseña -->        
         <div
           class="form-group"
           *ngIf="(!isEditMode&&!isEditOwner)"
@@ -63,7 +67,6 @@
             class="form-control mb-4"
           />
         </div>
-
         <!-- Buttons -->
         <div class="form-group">
           <button

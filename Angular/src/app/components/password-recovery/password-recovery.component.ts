@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
+import { Component , ChangeDetectorRef} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment'; 
+
 
 @Component({
   selector: 'app-password-recovery',
   templateUrl: './password-recovery.component.html',
 })
+
 export class PasswordRecoveryComponent {
   passwordRecoveryForm: FormGroup;
+  type : string = '';
+  message: string = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private cdr: ChangeDetectorRef,private fb: FormBuilder, private http: HttpClient) {
     this.passwordRecoveryForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -24,15 +29,20 @@ export class PasswordRecoveryComponent {
 
   sendPasswordRecoveryRequest(email: string) {
     this.http
-      .post('https://api.tuaplicacion.com/password-recovery', { email })
+      .post(environment.apiUrl+'/email/send/'+ email,'' )
       .subscribe({
-        next: (response) => {
-          console.log('Solicitud de recuperación enviada', response);
-          // Aquí puedes mostrar un toast de éxito
+        next: () => {
+          this.message = '';
+          this.cdr.detectChanges();
+          this.type  = 'success';
+          this.message = 'Solicitud de recuperación enviada';
         },
         error: (error) => {
-          console.error('Error al enviar la solicitud', error);
-          // Aquí puedes manejar el error y mostrar un mensaje
+          this.message = '';
+          this.cdr.detectChanges();
+          this.type  = 'danger';
+
+          this.message = error.error.message ;
         },
       });
   }

@@ -40,6 +40,9 @@ EmployeeService {
     return this.http.patch<Employee>(`${this.apiUrl}/${id}`, employee);
   }
 
+  updateEmployeePass(token: string, employee: Employee): Observable<Employee> {
+    return this.http.patch<Employee>(`${this.apiUrl}/pass/${token}`, employee);
+  }
   deleteEmployee(id: string): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete(`${this.apiUrl}/${id}`);

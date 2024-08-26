@@ -7,8 +7,9 @@ import { Component , Input } from'@angular/core';
 })
 export class ToastComponent {
 
-  @Input() message: string = '';  
+  @Input() messageToast: string = '';  
   @Input() showToast: boolean = false;  
+  @Input() toastType = 'success'; // o 'danger'
 
   onToastHidden() {
     this.showToast = false;

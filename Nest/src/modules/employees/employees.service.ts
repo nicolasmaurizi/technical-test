@@ -1,15 +1,17 @@
-import { Injectable , NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable , NotFoundException, InternalServerErrorException , UnauthorizedException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Employee } from './schemas/employee.schema';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { JwtService } from '@nestjs/jwt';
+import { Types } from 'mongoose';
 
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class EmployeesService {
-  constructor(
+  constructor(private readonly jwtService: JwtService,
     @InjectModel(Employee.name) private employeeModel: Model<Employee>,
   ) {}
 
@@ -45,7 +47,7 @@ export class EmployeesService {
       const updatedEmployee = await this.employeeModel.findByIdAndUpdate(
         _id,
         { $set: updateEmployeeDto },
-        { new: true },  // updated document is returned
+        { new: false },  // updated document is returned
       );
   
       if (!updatedEmployee) {
@@ -58,6 +60,30 @@ export class EmployeesService {
       console.log(error);
     }
   }
+
+  async updatePass(token: string,updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
+    try {
+      const decodedToken = this.jwtService.verify(token);
+      const employeeId  = decodedToken?.id;
+
+      const updatedEmployee = await this.employeeModel.findByIdAndUpdate(
+        employeeId ,
+        { $set: updateEmployeeDto },
+        { new: false },  // updated document is returned
+      );
+  
+      if (!updatedEmployee) {
+        throw new NotFoundException(`Error`);
+      }
+  
+      return updatedEmployee;
+   
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException('Invalid or expired token');
+    }
+  }
+}
 
   async delete(id: string) {
     const deletedEmployee = await this.employeeModel

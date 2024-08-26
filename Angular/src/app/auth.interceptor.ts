@@ -17,7 +17,6 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = sessionStorage.getItem('token');
     let auth = req;
-console.log(req.url);
     // check if it is a request to the third party url
     const thirdPartyUrl = environment.apiUrlPositions;
     if (req.url.includes(thirdPartyUrl)) {

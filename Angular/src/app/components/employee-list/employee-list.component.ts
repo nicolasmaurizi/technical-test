@@ -18,8 +18,9 @@ export class EmployeeListComponent implements OnInit {
   ) {}
   listTitle: string = 'Listado de Empleados';
   loading = false;
-  toastMessage: string = '';
+  messageToast: string = '';
   showToast: boolean = false;
+  toastType: string = 'success';
   employeeId: string | null = null;
 
   data: any[] = [];
@@ -87,8 +88,9 @@ export class EmployeeListComponent implements OnInit {
         this.loadEmployees(); // Recargar la lista de empleados
         this.closeModal();
         //this.show();
-        this.toastMessage = 'Eliminado Correctamente';
+        this.messageToast = 'Eliminado Correctamente';
         this.showToast = true;
+        this.toastType ='success';
       },
       error: (error) => {
         this.showError();
@@ -106,8 +108,11 @@ export class EmployeeListComponent implements OnInit {
     this.loadEmployees();
     this.dataService.data$.subscribe((data) => {
       if (data) {
-        this.toastMessage = data.toastMessage;
+        this.messageToast = data.toastMessage;
         this.showToast = data.showMessage;
+        this.toastType ='success';
+        
+        
       }
       // message to User when login
 

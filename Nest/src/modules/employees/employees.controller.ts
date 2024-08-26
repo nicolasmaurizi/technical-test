@@ -34,6 +34,11 @@ export class EmployeesController {
     async update(@Param('id') id: string, @Body() UpdateEmployeeDto: UpdateEmployeeDto) {
       return this.employeesService.update(id,UpdateEmployeeDto);
     }
+    @Patch('pass/:token')
+    async updatePass(@Param('token') token: string, @Body() UpdateEmployeeDto: UpdateEmployeeDto) {
+      return this.employeesService.updatePass(token,UpdateEmployeeDto);
+    }
+
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: string): Promise<Employee[]> {

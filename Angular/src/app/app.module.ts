@@ -15,13 +15,17 @@ import { EmployeeFormComponent } from './components/employee-form/employee-form.
 import { AuthInterceptor } from './auth.interceptor';
 import  { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PasswordRecoveryComponent } from './components/password-recovery/password-recovery.component';
+//import { AlertCloseableComponent } from './components/alert-closeable/alert-closeable.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 @NgModule({
-  declarations: [AppComponent, EmployeeListComponent, LoginComponent, HomeComponent, ModalComponent, ToastComponent, EmployeeFormComponent, PasswordRecoveryComponent,
+  declarations: [AppComponent, EmployeeListComponent, LoginComponent, HomeComponent, ModalComponent, ToastComponent, EmployeeFormComponent, PasswordRecoveryComponent, ChangePasswordComponent,
+    // AlertCloseableComponent,
 
     ],
   imports: [BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule
-  ,NgbToastModule , FormsModule, ReactiveFormsModule],
+  ,NgbToastModule , FormsModule, ReactiveFormsModule,NgbModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

@@ -16,18 +16,17 @@ interface PositionResponse {
 })
 
 export class EmployeeFormComponent implements OnInit {
-  @Input() employeeData: any; // Datos del empleado para editar
+  @Input() employeeData: any; 
   // for show and enabled inputs
   @Input() isEditMode: boolean = false; 
   @Input() isEditOwner: boolean = false; 
-
   //
   @Output() formSubmit = new EventEmitter<any>();
   @Output() formCancel = new EventEmitter<void>();
   
-  toastMessage: string = '';
   showToast: boolean = false;
-
+  toastType: string = 'success';
+  messageToast : string = '';
   positions: string[] = [];
   element: [] = [];
   
@@ -84,35 +83,40 @@ export class EmployeeFormComponent implements OnInit {
       if (this.isEditMode) {
         this.employeeService.updateEmployee(this.employeeData._id,this.employeeForm.value).subscribe(
           (response) => {
-            const dataToPass = { toastMessage: 'Usuario MODIFICADO correctamente.',showMessage: true}; 
+            const dataToPass = { toastMessage: 'Usuario MODIFICADO correctamente.',showMessage: true,toastType:"success"}; 
             this.dataService.setData(dataToPass);
             this.router.navigate(['/employees']);
           },
           (error) => {
-            window.alert('Verifique Datos');
+            this.messageToast = 'Verifique Datos';
+            this.showToast = true;
+            this.toastType ='success';
           }
         );
       } else {
         this.employeeService.addEmployee(this.employeeForm.value).subscribe(
           () => {
-            const dataToPass = { toastMessage: 'Usuario CREADO correctamente.',showMessage: true}; 
+            const dataToPass = { toastMessage: 'Usuario CREADO correctamente.',showMessage: true,toastType:"success"}; 
             this.dataService.setData(dataToPass);
             this.router.navigate(['/employees']);
           },
           (error) => {
-            window.alert('Verifique Datos');
+            this.messageToast = 'Verifique Datos';
+            this.showToast = true;
+            this.toastType ='success';
           }
         );
       }
 
     }
     else {
-      window.alert('Datos erróneos');
+      this.messageToast = 'Datos incompletos';
+      this.showToast = true;
+      this.toastType ='success';
     }
   }
 
   onCancel(): void {
-    //this.cancel.emit(true); 
     this.router.navigate(['/employees']);
   }
 }
